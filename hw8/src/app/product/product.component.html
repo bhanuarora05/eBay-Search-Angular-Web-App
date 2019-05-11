@@ -1,0 +1,146 @@
+<div class="row">
+<div class="bg-dark text-white mt-3 col-11 col-md-9 mx-auto">
+  <br>
+  <h3 class="text-center pt-2 pb-4">Product Search</h3>
+  <form [formGroup]="ProductForm">
+    <div class="form-group row">
+        <div class="col-md-2"></div>
+        <label for="inputkeyword" class="col-md-2 pl-0 pr-0 pl-md-1 pr-md-1 col-form-label">Keyword<span class="text-danger">*</span></label>
+        
+        <div class="col-md-5 pl-0 pr-0 pl-md-1 pr-md-1" >
+          <input type="text" class="form-control" [ngClass]="ProductForm.get('keyword').invalid && (ProductForm.get('keyword').dirty || ProductForm.get('keyword').touched) ? 'is-invalid' : ''" id="inputkeyword" formControlName="keyword" placeholder="Enter Product Name (eg. iPhone 8)" autocomplete="off">
+          <div *ngIf="ProductForm.get('keyword').invalid && (ProductForm.get('keyword').dirty || ProductForm.get('keyword').touched)" class="invalid-feedback">
+              Please enter a keyword.
+          </div>
+        </div>
+
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2"></div>
+          <label for="inputcategory" class="col-md-2 pl-0 pr-0 pl-md-1 pr-md-1 col-form-label">Category</label>
+          <div class="col-md-2 pl-0 pr-0 pl-md-1 pr-md-1">
+              <select class="form-control" id="inputcategory" formControlName="category">
+                  <option value="all">All Categories</option>
+                  <option value="550">Art</option>
+                  <option value="2984">Baby</option>
+                  <option value="267">Books</option>
+                  <option value="11450">Clothing, Shoes & Accessories</option>
+                  <option value="58058">Computers/Tablets & Networking</option>
+                  <option value="26395">Health & Beauty</option>
+                  <option value="11233">Music</option>
+                  <option value="1249">Video Games & Consoles</option>
+                </select>
+          </div>
+
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2"></div>
+        <label for="inputcondition" class="col-md-2 pl-0 pr-0 pl-md-1 pr-md-1 col-form-label">Condition</label>
+        <div class="form-check pl-0 pr-0 pl-md-1 pr-md-1 col-auto pt-2">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="Checkbox1" value="New" formControlName="New">
+                <label class="form-check-label" for="Checkbox1">New</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="Checkbox2" value="Used" formControlName="Used">
+                <label class="form-check-label" for="Checkbox2">Used</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="Checkbox3" value="Unspecified" formControlName="Unspecified">
+                <label class="form-check-label" for="Checkbox3">Unspecified</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row mb-2">
+        <div class="col-md-2"></div>
+        <label for="inputshipping" class="col-md-2 pl-0 pr-0 pl-md-1 pr-md-1 col-form-label">Shipping Options</label>
+        <div class="form-check pl-0 pr-0 pl-md-1 pr-md-1 col-auto pt-2">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="Local" value="Localpickup" formControlName="local">
+                <label class="form-check-label" for="Local">Local Pickup</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="Free" value="FreeShipping" formControlName="freeshipping">
+                <label class="form-check-label" for="Free">Free Shipping</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row mb-2 pb-1">
+        <div class="col-md-2"></div>
+        <label for="inputdistance" class="col-md-2 pl-0 pr-0 pl-md-1 pr-md-1 col-form-label">Distance(Miles)</label>
+        <div class="col-md-2 pl-0 pr-0 pl-md-1 pr-md-1 pt-2">
+          <input type="text" class="form-control" id="inputdistance" placeholder="10" formControlName="inputdist">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2"></div>
+        <label for="inputloc" class="col-md-2 pl-0 pr-0 pl-md-1 pr-md-1 col-form-label">From<span class="text-danger">*</span></label>
+        <div class="form-check pl-0 pr-0 pl-md-1 pr-md-1 col-md-5 pt-2">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="curr" value="current" formControlName="from" (click)="ProductForm.get('otherdist').disable();ProductForm.get('otherdist').reset();ProductForm.get('otherdist').setValue('')">
+                <label class="form-check-label" for="curr">Current Location</label>
+            </div>
+            <div class="form-check pb-1">
+                <input class="form-check-input" type="radio" id="other" value="Other" formControlName="from" (click)="ProductForm.get('otherdist').enable()">
+                <label class="form-check-label" for="other">Other. Please specify zip code:</label>
+            </div>
+            <div>
+            <input type="text" class="form-control" id="otherdist" formControlName="otherdist" [ngClass]="ProductForm.get('otherdist').invalid && (ProductForm.get('otherdist').dirty || ProductForm.get('otherdist').touched) && ProductForm.get('otherdist').errors.required ? 'is-invalid' : ''" matInput [matAutocomplete]="auto">
+            <div *ngIf="ProductForm.get('otherdist').invalid && (ProductForm.get('otherdist').dirty || ProductForm.get('otherdist').touched) && ProductForm.get('otherdist').errors.required" class="invalid-feedback">
+                Please enter a zip code.
+              </div>
+              <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option.postalCode">
+                    {{option.postalCode}}
+                  </mat-option>
+              </mat-autocomplete>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row pb-3">
+        <div class="col-md-2"></div>
+        <div class="col-auto pl-1 pr-1">
+            <button type="button" class="btn btn-default bg-light mr-3" [disabled]="ProductForm.invalid || ziphere==''" (click)="filterService.prod_details = 0;filterService.prod_results={};selectTab(0);ebayresults();">
+                <span class="mdi mdi-search mdi-lg"></span>Search
+            </button>
+            <button class="btn btn-default bg-light ml-3" (click)="ProductForm.reset();ProductForm.get('from').setValue('current');ProductForm.get('category').setValue('all');ProductForm.get('keyword').setValue('');ProductForm.get('New').setValue('');ProductForm.get('Used').setValue('');ProductForm.get('Unspecified').setValue('');ProductForm.get('local').setValue('');ProductForm.get('freeshipping').setValue('');ProductForm.get('inputdist').setValue('');ProductForm.get('otherdist').setValue('');json_err='';ebayResults.length=0;" (click)="filterService.prod_results={};filterService.prod_wishlist={};filterService.prod_details = 0;selectTab(0);ebayResults=[]">
+                <span class="mdi mdi-clear-all mdi-lg"></span>Clear
+            </button>
+        </div>
+    </div>
+  </form>
+  
+</div>
+</div>
+
+<div class="row">
+<div class="p-0 mt-4 col-12 col-md-10 mx-auto">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link" href="#results" [ngClass]="{ 'active':activeTab===0}" (click)="onSelect(0)"
+                    data-toggle="pill">Results</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#wishlist" [ngClass]="{ 'active':activeTab===1}" data-toggle="pill"
+                    (click)="onSelect(1)">Wish List</a>
+            </li>
+        </ul>
+</div>
+</div>
+<div class="row">
+<div class="p-0 mt-4 col-12 col-md-10 mx-auto">
+<div [@sliding]="filterService.prod_details.toString()">
+
+<div class="tab-content">
+        <div class="tab-pane" id="results" [ngClass]="{ 'active':activeTab===0}">
+            <app-results *ngIf="filterService.prod_details == 0" [ebayResults]="ebayResults" [json_err]="json_err" [progress]="progress"></app-results>
+        </div>
+        <div class="tab-pane" id="wishlist" [ngClass]="{ 'active':activeTab===1}">
+            <app-wishlist *ngIf="filterService.prod_details == 0"></app-wishlist>
+        </div>
+</div>
+<app-prod-details *ngIf="filterService.prod_details == 1" id="prod_details" (backevent)="onSelect(activeTab)" ></app-prod-details>
+</div>
+</div>
+</div>
+

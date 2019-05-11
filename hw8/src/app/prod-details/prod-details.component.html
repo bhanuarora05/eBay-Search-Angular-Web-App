@@ -1,0 +1,305 @@
+<div *ngIf="progress_prod==1" class="row">
+<div class="p-0 mt-2 col-12 col-md-10 mx-auto">
+<div class="row">
+<div class="progress col-12 col-md-11 p-0 mx-auto">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
+</div>
+</div>
+</div>
+</div>
+
+<div *ngIf="progress_prod==0" class="row">
+<div class="col-11 col-md-9 p-0 mt-4 mx-auto">
+  <div class="row">      
+  <div class="h5 col-auto p-0 text-center">{{filterService.prod_data.fulltitle}}</div>
+  </div>
+  <div class="row">
+  <div class="col-12 p-0">
+  <button type="button" class="btn btn-default bg-light" (click)="backevent.emit('back')">
+      <span class="mdi mdi-chevron-left mdi-lg"></span> List
+  </button>
+  <button type="button" class="btn btn-default bg-light float-right" (click)="wishadd(filterService.prod_data)">
+  <span *ngIf="!checklocal(filterService.prod_data.itmId)" class='mdi mdi-add-shopping-cart mdi-lg'></span> 
+  <span *ngIf="checklocal(filterService.prod_data.itmId)"  class='mdi mdi-remove-shopping-cart mdi-lg' style="color:rgb(185, 134, 6)"></span> 
+  </button>
+  <a href="{{fb}}" target="_blank" class="btn btn-light float-right mr-1" style="width:2.41rem;height:2.35rem;border:none;background: url('http://csci571.com/hw/hw8/Images/facebook.png');background-size: 100% 100%;"></a>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-12 p-0">
+  <tabset>
+      <tab heading="Product">
+          <ng-container *ngIf="json_err_prod!=''">
+              <div class="pl-3 pr-3 row">
+                <div class="alert alert-warning col-12 mx-auto mt-2" role="alert">
+                  No records. 
+                </div>
+              </div>
+          </ng-container>
+          <div *ngIf="json_err_prod==''" class="row">
+          <div class="col-12 p-0 m-0 table-responsive">
+              
+            <table class="table table-dark table-striped">
+
+                    <tbody>
+                    <tr *ngIf="json_prod_data.hasOwnProperty('PictureURL')">
+                      <th class=text-nowrap scope="row">Product Images</th>
+                      <td scope="col"><a href="#exampleModal" data-toggle="modal" data-target="#exampleModal" class="text-info">View Product Images here</a></td>
+                    </tr>
+                 
+
+                    <tr *ngIf="json_prod_data.hasOwnProperty('Subtitle')">
+                        <th class=text-nowrap scope="row">Subtitle</th>
+                        <td scope="col">{{json_prod_data.Subtitle}}</td>
+                    </tr>
+                    <tr *ngIf="json_prod_data.hasOwnProperty('CurrentPrice')">
+                        <th class=text-nowrap scope="row">Price</th>
+                        <td scope="col">${{json_prod_data['CurrentPrice']['Value']}}</td>
+                    </tr>
+                    <tr *ngIf="json_prod_data.hasOwnProperty('Location')">
+                        <th class=text-nowrap scope="row">Location</th>
+                        <td scope="col">{{json_prod_data['Location']}}</td>
+                    </tr>
+                    <tr *ngIf="json_prod_data['ReturnPolicy'].hasOwnProperty('ReturnsAccepted')">
+                        <th class=text-nowrap scope="row">Return Policy</th>
+                        <td scope="col">{{json_prod_data['ReturnPolicy']['ReturnsAccepted']}}
+                          <ng-container *ngIf="json_prod_data['ReturnPolicy'].hasOwnProperty('ReturnsWithin')">
+                            Within {{json_prod_data['ReturnPolicy']['ReturnsWithin']}}
+                          </ng-container></td>
+                    </tr>
+                    <ng-container *ngIf="json_prod_data.hasOwnProperty('ItemSpecifics')">
+                    <tr *ngFor="let res of json_prod_data['ItemSpecifics']['NameValueList']">
+                        <th class=text-nowrap scope="row">{{res['Name']}}</th>
+                        <td scope="col">{{res['Value']}}</td>
+                    </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+          </div>
+          </div>
+        
+          <div *ngIf="json_err_prod=='' && json_prod_data.hasOwnProperty('PictureURL')" id="exampleModal" class="modal fade" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Product Images</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                          <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <a href="{{json_prod_data['PictureURL'][0]}}" target="_blank"><img class="img-fluid" src="{{json_prod_data['PictureURL'][0]}}"  width="100%" style="padding:0.75rem;background-color: rgb(0,0,0);"></a> 
+                            </div>
+                            <div class="carousel-item" *ngFor="let image of json_prod_data['PictureURL'].slice(1,json_prod_data['PictureURL'].length)">
+                                <a href="{{image}}" target="_blank"><img class="img-fluid" src="{{image}}"  width="100%" style="padding:0.75rem;background-color: rgb(0,0,0);"></a> 
+                            </div>
+
+      
+                          </div>
+                          <ng-container *ngIf="json_prod_data['PictureURL'].length>1">
+                          <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon bg-dark" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                          <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon bg-dark" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                          </a>
+                          </ng-container>
+                        </div>
+                    
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary bg-dark text-white" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+      </tab>
+      <tab heading="Photos">
+        <ng-container *ngIf="json_err_prodimages!=''">
+            <div class="pl-3 pr-3 row">
+              <div class="alert alert-warning col-12 mx-auto mt-2" role="alert">
+                No records. 
+              </div>
+            </div>
+        </ng-container>
+        <div class="row">
+          <div class="col-12 p-0 mt-2" *ngIf="json_err_prodimages==''">
+              <div class="row ml-n2 mr-n2">
+                   
+                  <div class="col-md-4 pr-1 pl-1"><ng-container *ngFor="let image of json_prod_images.slice(0,3)"><a *ngIf="image!=undefined" href="{{image}}" target="_blank"><img class="img-fluid mb-2" src="{{image}}" width="100%" style="padding:0.75rem;background-color: rgb(0,0,0);"></a></ng-container></div>
+                  <div class="col-md-4 pr-1 pl-1"><ng-container *ngFor="let image of json_prod_images.slice(3,6)"><a *ngIf="image!=undefined" href="{{image}}" target="_blank"><img class="img-fluid mb-2" src="{{image}}" width="100%" style="padding:0.75rem;background-color: rgb(0,0,0);"></a></ng-container></div>
+                  <div class="col-md-4 pr-1 pl-1"><ng-container *ngFor="let image of json_prod_images.slice(6,9)"><a *ngIf="image!=undefined" href="{{image}}" target="_blank"><img class="img-fluid mb-2" src="{{image}}" width="100%" style="padding:0.75rem;background-color: rgb(0,0,0);"></a></ng-container></div>      
+              </div>
+          </div>
+        </div>
+      </tab>
+      <tab heading="Shipping">
+          <ng-container *ngIf="filterService.prod_data.shippinginf=='N/A'" >
+              <div class="pl-3 pr-3 row">
+                <div class="alert alert-warning col-12 mx-auto mt-2" role="alert">
+                  No records. 
+                </div>
+              </div>
+          </ng-container>
+          <div *ngIf="filterService.prod_data.shippinginf!='N/A'" class="row">
+          <div class="col-12 p-0 m-0 table-responsive">
+              <table class="table table-dark table-striped">
+
+            <tbody>
+            <tr *ngIf="filterService.prod_data.shippinginf.hasOwnProperty('shippingServiceCost')">
+                <th class=text-nowrap scope="row">Shipping Cost</th>
+                <td scope="col" *ngIf="filterService.prod_data.shippinginf['shippingServiceCost'][0]['__value__']==0.0">Free Shipping</td>
+                <td scope="col" *ngIf="filterService.prod_data.shippinginf['shippingServiceCost'][0]['__value__']!=0.0">${{filterService.prod_data.shippinginf['shippingServiceCost'][0]['__value__']}}</td>
+            </tr>
+            <tr *ngIf="filterService.prod_data.shippinginf.hasOwnProperty('shipToLocations')">
+                <th class=text-nowrap scope="row">Shipping Locations</th>
+                <td scope="col">{{filterService.prod_data.shippinginf['shipToLocations'][0]}}</td>
+            </tr>
+            <tr *ngIf="filterService.prod_data.shippinginf.hasOwnProperty('handlingTime')">
+                <th class=text-nowrap scope="row">Handling Time</th>
+                <td scope="col" *ngIf="filterService.prod_data.shippinginf['handlingTime'][0]<=1">{{filterService.prod_data.shippinginf['handlingTime'][0]}} Day</td>
+                <td scope="col" *ngIf="filterService.prod_data.shippinginf['handlingTime'][0]>1">{{filterService.prod_data.shippinginf['handlingTime'][0]}} Days</td>
+            </tr>
+            <tr *ngIf="filterService.prod_data.shippinginf.hasOwnProperty('expeditedShipping')">
+                <th class=text-nowrap scope="row">Expedited Shipping </th>
+                <td scope="col" *ngIf="filterService.prod_data.shippinginf['expeditedShipping'][0]=='false'"><span class="mdi mdi-clear mdi-lg text-danger"></span></td>
+                <td scope="col" *ngIf="filterService.prod_data.shippinginf['expeditedShipping'][0]=='true'"><span class="mdi mdi-done mdi-lg text-success"></span></td>
+            </tr>
+            <tr *ngIf="filterService.prod_data.shippinginf.hasOwnProperty('oneDayShippingAvailable')">
+                <th class=text-nowrap scope="row">One Day Shipping</th>
+                <td scope="col" *ngIf="filterService.prod_data.shippinginf['oneDayShippingAvailable'][0]=='false'"><span class="mdi mdi-clear mdi-lg text-danger"></span></td>
+                <td scope="col" *ngIf="filterService.prod_data.shippinginf['oneDayShippingAvailable'][0]=='true'"><span class="mdi mdi-done mdi-lg text-success"></span></td>
+            </tr>
+            <tr *ngIf="filterService.prod_data.returnsaccepted!='N/A'">
+                <th class=text-nowrap scope="row">Return Accepted</th>
+                <td scope="col" *ngIf="filterService.prod_data.returnsaccepted=='false'"><span class="mdi mdi-clear mdi-lg text-danger"></span></td>
+                <td scope="col" *ngIf="filterService.prod_data.returnsaccepted=='true'"><span class="mdi mdi-done mdi-lg text-success"></span></td>
+            </tr>
+            </tbody>
+            </table>
+              
+          </div>
+          </div>
+      </tab>
+      <tab heading="Seller">
+          <ng-container *ngIf="json_err_prod!=''">
+              <div class="pl-3 pr-3 row">
+                <div class="alert alert-warning col-12 mx-auto mt-2" role="alert">
+                  No records. 
+                </div>
+              </div>
+          </ng-container>
+          <div *ngIf="json_err_prod==''" class="row">
+          <div class="col-12 p-0 m-0 table-responsive">
+              <table class="table table-dark table-striped">
+                    <tbody>
+                    <tr *ngIf="json_prod_data['Seller'].hasOwnProperty('UserID')">
+                            <td colspan=2 class="text-center h5">{{json_prod_data['Seller']['UserID']}}</td>
+                    </tr>
+                    <tr *ngIf="json_prod_data['Seller'].hasOwnProperty('FeedbackScore')">
+                      <th class=text-nowrap scope="row">Feedback Score</th>
+                      <td scope="col">{{json_prod_data['Seller']['FeedbackScore']}}</td>
+                    </tr>
+                    <tr *ngIf="json_prod_data['Seller'].hasOwnProperty('PositiveFeedbackPercent')">
+                        <th class=text-nowrap scope="row">Popularity</th>
+                        <td scope="col"><div style="position:relative;display: inline-flex;"><round-progress [current]="json_prod_data['Seller']['PositiveFeedbackPercent']" [max]="100" [clockwise]="false" [background]="'rgb(234, 234, 234)'"
+                          [radius]="20" [stroke]="2.5" [color]="'rgb(40, 167, 69)'" [duration]='0.00000001'></round-progress><div style="position:absolute;margin:auto;left:0;top: 0;right:0;bottom:0;font-size:1.1rem;line-height: 2.3rem;text-align: center;">{{json_prod_data['Seller']['PositiveFeedbackPercent']}}</div></div></td>
+                    </tr>
+                    <tr *ngIf="json_prod_data['Seller'].hasOwnProperty('FeedbackRatingStar')">
+                        <th class=text-nowrap scope="row">Feedback Rating Star</th>
+                        <td scope="col"><span class="{{feedback_star_lookup[json_prod_data['Seller']['FeedbackRatingStar']][0]}}" [ngStyle]="{'color':feedback_star_lookup[json_prod_data['Seller']['FeedbackRatingStar']][1],'font-size':'1.75rem'}"></span></td>
+                    </tr>
+
+                    <tr *ngIf="json_prod_data['Seller'].hasOwnProperty('TopRatedSeller')">
+                        <th class=text-nowrap scope="row">Top Rated</th>
+                        <td scope="col" *ngIf="json_prod_data['Seller']['TopRatedSeller']==false"><span class="mdi mdi-clear mdi-lg text-danger"></span></td>
+                        <td scope="col" *ngIf="json_prod_data['Seller']['TopRatedSeller']==true"><span class="mdi mdi-done mdi-lg text-success"></span></td>
+                    </tr>
+                   
+                    <tr *ngIf="json_prod_data.hasOwnProperty('Storefront')">
+                        <th class=text-nowrap scope="row">Store Name</th>
+                        <td scope="col">{{json_prod_data['Storefront']['StoreName']}}</td>
+                    </tr>
+                    <tr *ngIf="json_prod_data.hasOwnProperty('Storefront')">
+                        <th class=text-nowrap scope="row">Buy Product At </th>
+                        <td scope="col"><a class="text-info" href="{{json_prod_data['Storefront']['StoreURL']}}" target="_blank">Store</a></td>
+                    </tr>
+                  
+      
+                  </tbody>
+                </table>
+                      
+        </div>
+        </div>
+ 
+      </tab>
+      <tab heading="Similar Products">
+          <ng-container *ngIf="json_err_simitems!=''">
+              <div class="pl-3 pr-3 row">
+                <div class="alert alert-warning col-12 mx-auto mt-2" role="alert">
+                  No records. 
+                </div>
+              </div>
+          </ng-container>
+          <div *ngIf="json_err_simitems==''" class="row">
+          <div class="col-12 p-0 m-0">
+              <div class="row m-0 mt-4 mb-3">
+              <div class="col-md-2 pl-0 pr-0 pr-md-3">
+              <select class="form-control" [(ngModel)]="selectedValue" >
+                  <option [ngValue]="'default'">Default</option>
+                  <option [ngValue]="'title'">Product Name</option>
+                  <option [ngValue]="'daysleft'">Days Left</option>
+                  <option [ngValue]="'price'">Price</option>
+                  <option [ngValue]="'shippingcost'">Shipping Cost</option>
+              </select>
+              </div>
+              <div class="col-md-2 pl-0 pr-0 pl-md-3">
+                <select class="form-control" [(ngModel)]="sortorder" [disabled]="selectedValue=='default'">
+                    <option [ngValue]="'asc'">Ascending</option>
+                    <option [ngValue]="'desc'">Descending</option>
+                  </select>
+              </div>
+              </div>
+
+              <div class="row" *ngFor="let res of sort_prod_details(selectedValue,sortorder).slice(0,limit)">
+              <div class="card col-12 p-0 m-0 bg-dark mt-2">
+                <div class="row m-0">
+                    <div class="col-auto pl-4 p-3">
+                      <a href="{{res['img']}}" target="_blank"><img src="{{res['img']}}" style="width:10rem;height:10rem;"></a>
+                    </div>
+                  <div class="col-auto pl-4 p-3 pt-4 card-body">
+                      <span class="card-text" *ngIf="res.hasOwnProperty('url')"><a href="{{res['url']}}" target="_blank" class="text-info">{{res['title']}}</a></span>
+                      <br>
+                      <span class="card-text mb-2 text-success" *ngIf="res.hasOwnProperty('price')">Price: ${{res['price']}}</span>
+                      <br>
+                      <span class="card-text mb-2 text-warning" *ngIf="res.hasOwnProperty('shippingcost')">Shipping Cost: ${{res['shippingcost']}}</span>
+                      <br>
+                      <span class="card-text mb-2 text-white">Days Left: {{res['daysleft']}} </span>
+
+                  </div>
+                  </div>
+                </div>
+              </div>
+                <div class="row">
+                <div class="col-auto text-center mt-5" *ngIf="sort_arr.length>5">
+                <button type="button" class="btn btn-dark" (click)=button_toggle(limit)>
+                  <span *ngIf="limit==5">Show More</span>
+                  <span *ngIf="limit>5">Show Less</span>
+                </button>
+              </div>
+              </div>
+          </div>
+          </div>
+        
+      </tab>
+    </tabset>
+  </div>
+  </div>
+</div>
+</div>

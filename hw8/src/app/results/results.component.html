@@ -1,0 +1,76 @@
+   
+    <div class="row">
+    <div *ngIf="progress==1" class="progress col-12 col-md-11 p-0 mx-auto mt-2">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
+      </div>
+    </div>
+
+<ng-container *ngIf="json_err!='' && progress==0">
+  <div class="row pl-4 pr-4">
+    <div class="alert alert-warning col-11 mx-auto mt-2" role="alert">
+       No records. 
+    </div>
+    </div>
+</ng-container>
+
+
+
+<ng-container *ngIf="json_err=='' && ebayResults.length!=0 && progress==0">
+    <div class="row">
+    <div class="col-11 p-0 mx-auto text-right">
+            <button type="button" class="btn btn-default bg-light" [disabled]="(filterService.prod_results | json)=='{}'" (click)="product_details(filterService.prod_results)">
+                Detail<span class="mdi mdi-chevron-right mdi-lg pr=0"></span> 
+            </button>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-11 pl-3 pr-3 pl-md-4 pr-md-4 mx-auto table-responsive m-0 mt-4">
+        
+          <table class="table table-dark table-hover table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Image</th>
+                <th scope="col">Title</th>
+                <th scope="col">Price</th>
+                <th scope="col">Shipping</th>
+                <th scope="col">Zip</th>
+                <th scope="col">Seller</th>
+                <th scope="col">Wish List</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let result of ebayResults.slice((current-1)*10, (current-1)*10 + 10);let i=index" [ngStyle]="filterService.prod_results.itmId==result.itmId && {'background-color': 'rgba(255,255,255,.7)'}">
+                <td class=text-nowrap>{{i+1}}</td>
+                <td class=text-nowrap><a href="{{result.galleryurl}}" target="_blank"><img src='{{result.galleryurl}}' style="height:6.5rem;width:6.5rem;"></a></td>
+                <td class=text-nowrap><a class="text-primary" (click)="product_details(result)" tooltip="{{result.fulltitle}}" placement="bottom">{{result.shorttitle}}</a></td>
+                <td class=text-nowrap>${{result.price}}</td>
+                <td class=text-nowrap>{{result.shipping=='Free Shipping'? 'Free Shipping': '$'+result.shipping}}</td>
+                <td class=text-nowrap>{{result.zip}}</td>
+                <td class=text-nowrap>{{result.selleruser}}</td>
+                <td class=text-nowrap> <button type="button" class="btn btn-default bg-light" (click)="wishadd(result)">
+               <span *ngIf="!checklocal(result.itmId)" class='mdi mdi-add-shopping-cart mdi-lg'></span> 
+               <span *ngIf="checklocal(result.itmId)"  class='mdi mdi-remove-shopping-cart mdi-lg' style="color:rgb(185, 134, 6)"></span> 
+                </button></td>              
+                </tr>
+            
+            </tbody>
+          </table>
+  </div>
+  </div>
+  <div class="row justify-content-center">
+  <div class="col-auto">
+      <pagination [totalItems]="ebayResults.length" [itemsPerPage]="10" previousText="&#171; Previous" nextText="Next &#187;" [(ngModel)]="current"></pagination>
+  </div>
+  </div>
+  
+</ng-container>
+
+  
+  
+  
+
+
+  
+  
+

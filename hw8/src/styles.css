@@ -1,0 +1,76 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+ul.nav.nav-pills{
+    justify-content: center;
+}
+
+ul.nav.nav-pills a.nav-link{
+    color: rgb(52,58,64);
+}
+
+ul.nav.nav-pills a.nav-link.active{
+    color: white;
+    background-color: rgb(52,58,64);
+}
+
+ul.pagination {
+    flex-wrap: wrap!important;
+}
+
+ul.pagination a.page-link{
+    color: rgb(52,58,64);
+    border: none;
+}
+ul.pagination li.page-item:first-child a.page-link {
+    border-radius: 0;
+}
+
+ul.pagination li.page-item:last-child a.page-link{
+    border-radius: 0;
+}
+ul.pagination li.page-item.active a.page-link {
+    border: transparent;
+    background: rgb(52,58,64);
+}
+ul.nav.nav-tabs{
+    justify-content: flex-end !important;
+}
+ul.nav-tabs a.nav-link {
+    color: rgb(52,58,64);
+}
+ul.nav-tabs a.nav-link{
+    padding-left: 0.25rem!important;
+    padding-right: 0.25rem!important;
+}
+@media (min-width: 768px){
+    ul.nav-tabs a.nav-link{
+        padding-left: 0.5rem!important;
+        padding-right: 0.5rem!important;
+    }
+}
+@media (min-width: 992px){
+    ul.nav-tabs a.nav-link{
+        padding-left: 1rem!important;
+        padding-right: 1rem!important;
+    }
+}
+ul.nav-tabs a.nav-link.active {
+    color:rgb(255,255,255);
+    background-color: rgb(52,58,64);
+}
+div.tooltip-inner{
+    font-size: 0.8rem;
+    background-color: rgb(88, 88, 88);
+}
+ul.nav li.nav-item.ng-star-inserted:last-child a.nav-link span{
+    display: none;
+}
+ul.nav li.nav-item.ng-star-inserted:last-child a.nav-link:after{
+    content: "Related";
+}
+@media (min-width: 768px){
+    ul.nav li.nav-item.ng-star-inserted:last-child a.nav-link:after{
+        content: "Similar Products";
+    }
+}
