@@ -5,8 +5,7 @@
 • Use a combination of HTML5, Bootstrap, Angular and jQuery on client side.
 • Use Node.js on server side.
 • Get familiar with Bootstrap to enhance the user experience using responsive design.
-• Get hands-on experience of Amazon Web Services/Google Cloud Platform App
-Engine/Microsoft Azure.
+• Get hands-on experience of Amazon Web Services
 • Learn to use popular APIs such as eBay API, Google Customized Search API and
 Facebook API.
 
